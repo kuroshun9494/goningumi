@@ -41,6 +41,14 @@ class _MyHomePageState extends State<MyHomePage> {
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
         title: Text(widget.title),
+        leading: ElevatedButton(
+          child: Text('次へ'),
+          onPressed: () => Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => NextPage()),
+
+          ),
+        ),
       ),
       body: SafeArea(
         child: Padding(
