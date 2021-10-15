@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:goningumi/next_page.dart';
+import 'package:goningumi/group_menu.dart';
 
 void main() {
   runApp(MyApp());
@@ -42,13 +42,15 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         title: Text(widget.title),
         leading: ElevatedButton(
-          child: Text('次へ'),
+          child: Text('menu'),
           onPressed: () => Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => NextPage()),
+            MaterialPageRoute(builder: (context) => GroupMenu()),
 
           ),
+
         ),
+
       ),
       body: SafeArea(
         child: Padding(
