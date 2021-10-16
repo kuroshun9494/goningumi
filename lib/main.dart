@@ -15,6 +15,9 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.green,
       ),
       home: MyHomePage(title: '五人組 Home Page'),
+      routes: <String, WidgetBuilder>{
+        '/group_menu': (_) => new GroupMenu(),
+      },
     );
   }
 }
@@ -46,11 +49,8 @@ class _MyHomePageState extends State<MyHomePage> {
           onPressed: () => Navigator.push(
             context,
             MaterialPageRoute(builder: (context) => GroupMenu()),
-
           ),
-
         ),
-
       ),
       body: SafeArea(
         child: Padding(
@@ -139,10 +139,10 @@ class _MyHomePageState extends State<MyHomePage> {
             IconButton(
                 onPressed: () => setState(
                       () {
-                        _formTexts.add(_formController.text);
-                        print(_formTexts);
-                      },
-                    ),
+                    _formTexts.add(_formController.text);
+                    print(_formTexts);
+                  },
+                ),
                 icon: Icon(Icons.send)),
           ],
         ),
@@ -151,3 +151,4 @@ class _MyHomePageState extends State<MyHomePage> {
     //
   }
 }
+
