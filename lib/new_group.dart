@@ -5,13 +5,18 @@ import 'package:goningumi/group_menu.dart';
 class NewGroup extends StatefulWidget {
   NewGroup();
 
-  //final String name ="";
-
   @override
   _NewGroupState createState() => _NewGroupState();
 }
 
 class _NewGroupState extends State<NewGroup> {
+  _NewGroupState(this._GroupTexts);
+
+  List _GroupTexts = [];
+  var textController = TextEditingController();
+
+  //List _GroupTexts = [];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -26,16 +31,23 @@ class _NewGroupState extends State<NewGroup> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             // テキスト入力
-            TextField(),
+            TextField(
+              controller: textController,
+            ),
+
             const SizedBox(height: 8),
             Container(
               // 横幅いっぱいに広げる
               width: double.infinity,
               // リスト追加ボタン
               child: ElevatedButton(
-                onPressed: () {
-                  Navigator.of(context).pushReplacementNamed('/group_menu');
-                },
+                onPressed: () => setState(
+                  () {
+                    _GroupTexts.add(textController.text);
+                    print(_GroupTexts);
+                    Navigator.of(context).pushReplacementNamed('/group_menu');
+                  },
+                ),
                 child: Text('グループ追加', style: TextStyle(color: Colors.white)),
               ),
             ),
@@ -60,4 +72,3 @@ class _NewGroupState extends State<NewGroup> {
     //
   }
 }
-
