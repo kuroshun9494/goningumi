@@ -1,7 +1,11 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:goningumi/group_menu.dart';
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized(); // Add this
+  // Firebase初期化
+  await Firebase.initializeApp();
   runApp(MyApp());
 }
 
@@ -10,145 +14,141 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Goningumi',
+      title: 'Flutter Demo',
       theme: ThemeData(
-        primarySwatch: Colors.green,
+        primarySwatch: Colors.blue,
       ),
-      home: MyHomePage(title: '五人組 Home Page'),
-      routes: <String, WidgetBuilder>{
-        '/group_menu': (_) => new GroupMenu(),
-      },
+      home: MyAuthPage(),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  MyHomePage({Key? key, required this.title}) : super(key: key);
-  final String title;
-
+class MyAuthPage extends StatefulWidget {
   @override
-  _MyHomePageState createState() => _MyHomePageState();
+  _MyAuthPageState createState() => _MyAuthPageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
-  var _formController = TextEditingController();
-  List _formTexts = [];
+class _MyAuthPageState extends State<MyAuthPage> {
+  // 入力されたメールアドレス
+  String newUserEmail = "";
+
+  // 入力されたパスワード
+  String newUserPassword = "";
+
+  // 入力されたメールアドレス（ログイン）
+  String loginUserEmail = "";
+
+  // 入力されたパスワード（ログイン）
+  String loginUserPassword = "";
+
+  // 登録・ログインに関する情報を表示
+  String infoText = "";
 
   @override
   Widget build(BuildContext context) {
-    //キーボードの高さを取得
-    final bottomSpace = MediaQuery.of(context).viewInsets.bottom;
-    //print(bottomSpace);
-
     return Scaffold(
-      resizeToAvoidBottomInset: false,
-      appBar: AppBar(
-        title: Text(widget.title),
-        leading: ElevatedButton(
-          child: Text('menu'),
-          onPressed: () => Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => GroupMenu()),
-          ),
-        ),
-      ),
-      body: SafeArea(
-        child: Padding(
-          padding: EdgeInsets.only(bottom: bottomSpace),
-          child: Container(
-            width: double.infinity,
-            child: Column(
-              children: [
-                buildChatArea(),
-                buildFormArea(),
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
-  Expanded buildChatArea() {
-    return Expanded(
-      child: Container(
-        color: Colors.greenAccent,
-        //スクロール可能にすうる
-        child: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.only(right: 8, left: 8),
-            child: Column(
-              children: [
-                for (var text in _formTexts)
-                  Padding(
-                    padding: const EdgeInsets.all(5.0),
-                    child: Align(
-                      alignment: Alignment.centerLeft,
-                      child: Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.only(
-                            topRight: Radius.circular(40),
-                            topLeft: Radius.circular(40),
-                            bottomRight: Radius.circular(40),
-                          ),
-                          color: Colors.white,
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.all(10.0),
-                          child: Text(text),
-                        ),
-                      ),
-                    ),
-                  ),
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
-  Container buildFormArea() {
-    return Container(
-      //height: 68,
-      color: Colors.white,
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Row(
-          children: [
-            Expanded(
-              child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                decoration: BoxDecoration(
-                    color: Colors.grey.shade200,
-                    borderRadius: BorderRadius.circular(20)),
-                child: TextFormField(
-                  controller: _formController,
-                  style: TextStyle(
-                    fontSize: 20.0,
-                    color: Colors.black,
-                    //fontStyle: FontStyle.normal
-                  ),
-                  decoration: const InputDecoration(
-                    border: InputBorder.none,
-                    hintText: 'Enter your comment',
-                  ),
-                ),
+      body: Center(
+        child: Container(
+          padding: EdgeInsets.all(32),
+          child: Column(
+            children: <Widget>[
+              //TextFormField(/* --- 省略 --- */),
+              TextFormField(
+                // テキスト入力のラベルを設定
+                decoration: InputDecoration(labelText: "メールアドレス"),
+                onChanged: (String value) {
+                  setState(() {
+                    newUserEmail = value;
+                  });
+                },
               ),
-            ),
-            IconButton(
-                onPressed: () => setState(
-                      () {
-                    _formTexts.add(_formController.text);
-                    print(_formTexts);
-                  },
-                ),
-                icon: Icon(Icons.send)),
-          ],
+              const SizedBox(height: 8),
+              TextFormField(
+                decoration: InputDecoration(labelText: "パスワード（６文字以上）"),
+                // パスワードが見えないようにする
+                obscureText: true,
+                onChanged: (String value) {
+                  setState(() {
+                    newUserPassword = value;
+                  });
+                },
+              ),
+              const SizedBox(height: 8),
+              ElevatedButton(
+                onPressed: () async {
+                  try {
+                    // メール/パスワードでユーザー登録
+                    final FirebaseAuth auth = FirebaseAuth.instance;
+                    final UserCredential result =
+                        await auth.createUserWithEmailAndPassword(
+                      email: newUserEmail,
+                      password: newUserPassword,
+                    );
+
+                    // 登録したユーザー情報
+                    final User user = result.user!;
+                    setState(() {
+                      infoText = "登録OK：${user.email}";
+                    });
+                  } catch (e) {
+                    // 登録に失敗した場合
+                    setState(() {
+                      infoText = "登録NG：${e.toString()}";
+                    });
+                  }
+                },
+                child: Text("ユーザー登録"),
+              ),
+
+              const SizedBox(height: 32),
+              TextFormField(
+                decoration: InputDecoration(labelText: "メールアドレス"),
+                onChanged: (String value) {
+                  setState(() {
+                    loginUserEmail = value;
+                  });
+                },
+              ),
+              TextFormField(
+                decoration: InputDecoration(labelText: "パスワード"),
+                obscureText: true,
+                onChanged: (String value) {
+                  setState(() {
+                    loginUserPassword = value;
+                  });
+                },
+              ),
+              const SizedBox(height: 8),
+              ElevatedButton(
+                onPressed: () async {
+                  try {
+                    // メール/パスワードでログイン
+                    final FirebaseAuth auth = FirebaseAuth.instance;
+                    final UserCredential result =
+                        await auth.signInWithEmailAndPassword(
+                      email: loginUserEmail,
+                      password: loginUserPassword,
+                    );
+                    // ログインに成功した場合
+                    final User user = result.user!;
+                    setState(() {
+                      infoText = "ログインOK：${user.email}";
+                    });
+                  } catch (e) {
+                    // ログインに失敗した場合
+                    setState(() {
+                      infoText = "ログインNG：${e.toString()}";
+                    });
+                  }
+                },
+                child: Text("ログイン"),
+              ),
+              const SizedBox(height: 8),
+              Text(infoText),
+            ],
+          ),
         ),
       ),
     );
-    //
   }
 }
-
