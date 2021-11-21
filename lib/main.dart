@@ -1,13 +1,21 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import 'package:goningumi/provider.dart';
+import 'chat_page.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized(); // Add this
   // Firebase初期化
   await Firebase.initializeApp();
-  runApp(ChatApp());
+  runApp(
+    // Riverpodでデータを受け渡しできる状態にする
+    ProviderScope(
+      child: ChatApp(),
+    ),
+  );
 }
 
 class ChatApp extends StatelessWidget {
@@ -26,23 +34,15 @@ class ChatApp extends StatelessWidget {
   }
 }
 
-// ログイン画面用Widget
-// ログイン画面用Widget
-class LoginPage extends StatefulWidget {
+// ConsumerWidgetでProviderから値を受け渡す
+class LoginPage extends ConsumerWidget {
   @override
-  _LoginPageState createState() => _LoginPageState();
-}
+  Widget build(BuildContext context, ScopedReader watch) {
+    // Providerから値を受け取る
+    final infoText = watch(infoTextProvider).state;
+    final email = watch(emailProvider).state;
+    final password = watch(passwordProvider).state;
 
-class _LoginPageState extends State<LoginPage> {
-  // メッセージ表示用
-  String infoText = '';
-
-  // 入力したメールアドレス・パスワード
-  String email = '';
-  String password = '';
-
-  @override
-  Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
         child: Container(
@@ -54,9 +54,8 @@ class _LoginPageState extends State<LoginPage> {
               TextFormField(
                 decoration: InputDecoration(labelText: 'メールアドレス'),
                 onChanged: (String value) {
-                  setState(() {
-                    email = value;
-                  });
+                  // Providerから値を更新
+                  context.read(emailProvider).state = value;
                 },
               ),
               // パスワード入力
@@ -64,9 +63,8 @@ class _LoginPageState extends State<LoginPage> {
                 decoration: InputDecoration(labelText: 'パスワード'),
                 obscureText: true,
                 onChanged: (String value) {
-                  setState(() {
-                    password = value;
-                  });
+                  // Providerから値を更新
+                  context.read(passwordProvider).state = value;
                 },
               ),
               Container(
@@ -88,18 +86,18 @@ class _LoginPageState extends State<LoginPage> {
                         email: email,
                         password: password,
                       );
-                      // ユーザー登録に成功した場合
+                      // ユーザー情報を更新
+                      context.read(userProvider).state = result.user;
                       // チャット画面に遷移＋ログイン画面を破棄
                       await Navigator.of(context).pushReplacement(
                         MaterialPageRoute(builder: (context) {
-                          return ChatPage(result.user!);
+                          return ChatPage();
                         }),
                       );
                     } catch (e) {
-                      // ユーザー登録に失敗した場合
-                      setState(() {
-                        infoText = "登録に失敗しました：${e.toString()}";
-                      });
+                      // Providerから値を更新
+                      context.read(infoTextProvider).state =
+                          "登録に失敗しました：${e.toString()}";
                     }
                   },
                 ),
@@ -114,7 +112,7 @@ class _LoginPageState extends State<LoginPage> {
                     try {
                       // メール/パスワードでログイン
                       final FirebaseAuth auth = FirebaseAuth.instance;
-                      final result = await auth.signInWithEmailAndPassword(
+                      await auth.signInWithEmailAndPassword(
                         email: email,
                         password: password,
                       );
@@ -122,90 +120,19 @@ class _LoginPageState extends State<LoginPage> {
                       // チャット画面に遷移＋ログイン画面を破棄
                       await Navigator.of(context).pushReplacement(
                         MaterialPageRoute(builder: (context) {
-                          return ChatPage(result.user!);
+                          return ChatPage();
                         }),
                       );
                     } catch (e) {
-                      // ログインに失敗した場合
-                      setState(() {
-                        infoText = "ログインに失敗しました：${e.toString()}";
-                      });
+                      // Providerから値を更新
+                      context.read(infoTextProvider).state =
+                          "ログインに失敗しました：${e.toString()}";
                     }
                   },
                 ),
               ),
             ],
           ),
-        ),
-      ),
-    );
-  }
-}
-
-// チャット画面用Widget
-class ChatPage extends StatelessWidget {
-  // 引数からユーザー情報を受け取れるようにする
-  ChatPage(this.user);
-  // ユーザー情報
-  final User user;
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('チャット'),
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.logout),
-            onPressed: () async {
-              // ログアウト処理
-              // 内部で保持しているログイン情報等が初期化される
-              // （現時点ではログアウト時はこの処理を呼び出せばOKと、思うぐらいで大丈夫です）
-              await FirebaseAuth.instance.signOut();
-              // ログイン画面に遷移＋チャット画面を破棄
-              await Navigator.of(context).pushReplacement(
-                MaterialPageRoute(builder: (context) {
-                  return LoginPage();
-                }),
-              );
-            },
-          ),
-        ],
-      ),
-      body: Center(
-        // ユーザー情報を表示
-        child: Text('ログイン情報：${user.email}'),
-      ),
-      floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.add),
-        onPressed: () async {
-          // 投稿画面に遷移
-          await Navigator.of(context).push(
-            MaterialPageRoute(builder: (context) {
-              return AddPostPage();
-            }),
-          );
-        },
-      ),
-
-    );
-  }
-}
-
-// 投稿画面用Widget
-class AddPostPage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('チャット投稿'),
-      ),
-      body: Center(
-        child: ElevatedButton(
-          child: Text('戻る'),
-          onPressed: () {
-            // 1つ前の画面に戻る
-            Navigator.of(context).pop();
-          },
         ),
       ),
     );
