@@ -33,7 +33,7 @@ class _EntryUserState extends State<EntryUser> {
       },
       child: Scaffold(
         appBar: AppBar(
-          title: Text('アカウント登録'),
+          title: Text('新規会員登録'),
         ),
         body: Center(
           child: Container(
@@ -105,7 +105,7 @@ class _EntryUserState extends State<EntryUser> {
                     }
                   },
                 ),
-                SizedBox(
+                const SizedBox(
                   //TextFormFieldどうしの隙間を空ける
                   height: 20.0,
                 ),
@@ -128,6 +128,19 @@ class _EntryUserState extends State<EntryUser> {
                         onSelectedItemChanged: _onSelectedRegionChanged,
                       );
                     }),
+                const SizedBox(
+                  //TextFormFieldどうしの隙間を空ける
+                  height: 30.0,
+                ),
+                Container(
+                  width: double.infinity,
+                  child: ElevatedButton(
+                    child: Text('登録する'),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                ),
               ],
             ),
           ),
@@ -135,7 +148,6 @@ class _EntryUserState extends State<EntryUser> {
       ),
     );
   }
-  String _selectedRegion = 'none';
 
   final List<String> _regions = [
     '北海道',
@@ -158,6 +170,7 @@ class _EntryUserState extends State<EntryUser> {
       regionController.text = _regions[index];
     });
   }
+
   void _showModalPicker(BuildContext context) {
     showModalBottomSheet<void>(
       context: context,
@@ -179,4 +192,3 @@ class _EntryUserState extends State<EntryUser> {
     );
   }
 }
-
