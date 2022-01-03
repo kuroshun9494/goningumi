@@ -7,30 +7,26 @@ import 'package:goningumi/provider.dart';
 
 enum RadioValue { male, female }
 
-class EntryUser extends StatefulWidget {
-  //CreateAccountPage();
-  @override
-  _EntryUserState createState() => _EntryUserState();
-}
-
-class _EntryUserState extends State<EntryUser> {
+class EntryUser extends ConsumerWidget {
   final _formKey = GlobalKey<FormState>();
 
   RadioValue _sex = RadioValue.male;
-  bool _isObscure1 = true;
-  bool _isObscure2 = true;
+
   var birthdayController = TextEditingController();
   var regionController = TextEditingController();
 
-  void _onChanged(value) {
-    setState(() {
-      _sex = value;
-    });
-  }
-
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, ScopedReader watch) {
     // Providerから値を受け取る
+    final accountName = watch(accountNameProvider).state;
+    final email = watch(emailProvider).state;
+    final password = watch(passwordProvider).state;
+    final _isObscure1 = watch(obscure1Provider).state;
+    final _isObscure2 = watch(obscure2Provider).state;
+    final sex = watch(sexProvider).state;
+    final birthday = watch(birthdayProvider).state;
+    final region = watch(regionProvider).state;
+
     return Form(
       key: _formKey,
       child: Scaffold(
@@ -53,6 +49,10 @@ class _EntryUserState extends State<EntryUser> {
                     ),
                   ),
                   maxLength: 10,
+                  onChanged: (String value) {
+                    // Providerから値を更新
+                    context.read(accountNameProvider).state = value;
+                  },
                   autovalidateMode: AutovalidateMode.onUserInteraction,
                   validator: (value) {
                     if (value!.isEmpty) {
@@ -78,7 +78,6 @@ class _EntryUserState extends State<EntryUser> {
                     if (value!.isEmpty) {
                       return 'Please enter a email-address.';
                     }
-
                     return null;
                   },
                 ),
@@ -93,9 +92,8 @@ class _EntryUserState extends State<EntryUser> {
                           : Icons.visibility),
                       // アイコンがタップされたら現在と反対の状態をセットする
                       onPressed: () {
-                        setState(() {
-                          _isObscure1 = !_isObscure1;
-                        });
+                        // Providerから値を更新
+                        context.read(obscure1Provider).state = !_isObscure1;
                       },
                     ),
                     focusedBorder: OutlineInputBorder(
@@ -131,9 +129,8 @@ class _EntryUserState extends State<EntryUser> {
                           : Icons.visibility),
                       // アイコンがタップされたら現在と反対の状態をセットする
                       onPressed: () {
-                        setState(() {
-                          _isObscure2 = !_isObscure2;
-                        });
+                        // Providerから値を更新
+                        context.read(obscure2Provider).state = !_isObscure2;
                       },
                     ),
                     focusedBorder: OutlineInputBorder(
@@ -159,13 +156,19 @@ class _EntryUserState extends State<EntryUser> {
                   title: Text('男性'),
                   value: RadioValue.male,
                   groupValue: _sex,
-                  onChanged: (value) => _onChanged(value),
+                  onChanged: (value) {
+                    // Providerから値を更新
+                    context.read(sexProvider).state = value.toString();
+                  },
                 ),
                 RadioListTile(
                   title: Text('女性'),
                   value: RadioValue.female,
                   groupValue: _sex,
-                  onChanged: (value) => _onChanged(value),
+                  onChanged: (value) {
+                    // Providerから値を更新
+                    context.read(sexProvider).state = value.toString();
+                  },
                 ),
                 TextFormField(
                   controller: birthdayController,
@@ -199,10 +202,9 @@ class _EntryUserState extends State<EntryUser> {
 
                     if (date != null) {
                       //誕生日を取得した後の処理をここに書く
-                      setState(() {
-                        birthdayController.text =
-                            (DateFormat('yyyy/MM/dd')).format(date);
-                      });
+
+                      context.read(birthdayProvider).state =
+                          (DateFormat('yyyy/MM/dd')).format(date);
                     }
                   },
                   autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -234,7 +236,9 @@ class _EntryUserState extends State<EntryUser> {
                     CupertinoPicker(
                       itemExtent: 40,
                       children: _regions.map(_pickerRegion).toList(),
-                      onSelectedItemChanged: _onSelectedRegionChanged,
+                      onSelectedItemChanged: (index) {
+                        context.read(birthdayProvider).state = _regions[index];
+                      },
                     );
                   },
                   autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -259,7 +263,6 @@ class _EntryUserState extends State<EntryUser> {
                         // 入力データが正常な場合の処理
                         Navigator.of(context).pop();
                       }
-
                     },
                   ),
                 ),
@@ -287,12 +290,6 @@ class _EntryUserState extends State<EntryUser> {
     );
   }
 
-  void _onSelectedRegionChanged(int index) {
-    setState(() {
-      regionController.text = _regions[index];
-    });
-  }
-
   void _showModalPicker(BuildContext context) {
     showModalBottomSheet<void>(
       context: context,
@@ -306,7 +303,9 @@ class _EntryUserState extends State<EntryUser> {
             child: CupertinoPicker(
               itemExtent: 40,
               children: _regions.map(_pickerRegion).toList(),
-              onSelectedItemChanged: _onSelectedRegionChanged,
+              onSelectedItemChanged: (index) {
+                context.read(birthdayProvider).state = _regions[index];
+              },
             ),
           ),
         );
