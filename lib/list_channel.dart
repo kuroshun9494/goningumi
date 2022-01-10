@@ -23,6 +23,24 @@ class ListChannel extends StatefulWidget {
 
 
 
+Widget buttonFunction(BuildContext context) {
+  return FloatingActionButton(onPressed: () {
+    Navigator.push(context, MaterialPageRoute(
+      // （2） 実際に表示するページ(ウィジェット)を指定する
+        builder: (context) => FirstPage()
+    ));
+  });
+}
+
+
+Widget chatTitle(String title) {
+  return Text(
+    title,
+    style: TextStyle(fontSize: 24),
+  );
+}
+
+
 class EachChannelTransition extends State<ListChannel> {
   @override
   Widget build(BuildContext context) {
@@ -34,42 +52,16 @@ class EachChannelTransition extends State<ListChannel> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children:<Widget> [
-            FloatingActionButton(onPressed: () {
-              Navigator.push(context, MaterialPageRoute(
-                // （2） 実際に表示するページ(ウィジェット)を指定する
-                  builder: (context) => FirstPage()
-              ));
-            }),
-            Text(
-                "乃木坂",
-                style: TextStyle(fontSize: 24),
-            ),
-            FloatingActionButton(onPressed: () {
-              Navigator.push(context, MaterialPageRoute(
-                // （2） 実際に表示するページ(ウィジェット)を指定する
-                  builder: (context) => FirstPage()
-              ));
-            }),
-            Text(
-              "野球",
-              style: TextStyle(fontSize: 24),
-            ),
-            FloatingActionButton(onPressed: () {
-              Navigator.push(context, MaterialPageRoute(
-                // （2） 実際に表示するページ(ウィジェット)を指定する
-                  builder: (context) => FirstPage()
-              ));
-            }),
-            Text(
-              "音楽",
-              style: TextStyle(fontSize: 24),
-            ),
-            FloatingActionButton(onPressed: () {}),
-            Text(
-              "勉強",
-              style: TextStyle(fontSize: 24),
-            ),
-            FloatingActionButton(onPressed: () {}),
+            buttonFunction(context),
+            chatTitle("乃木坂"),
+            buttonFunction(context),
+            chatTitle("野球"),
+            buttonFunction(context),
+            chatTitle("音楽"),
+            buttonFunction(context),
+            chatTitle("乃木坂"),
+            buttonFunction(context),
+            chatTitle("競プロ"),
           ],
         )
       ),
