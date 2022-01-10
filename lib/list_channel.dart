@@ -11,6 +11,7 @@ import 'package:goningumi/page.dart';
 //     return MaterialApp(home: ListChannel());
 //   }
 // }
+//
 
 
 class ListChannel extends StatefulWidget {
