@@ -7,6 +7,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:goningumi/provider.dart';
 import 'chat_page.dart';
 import 'entry_user.dart';
+import 'list_channel.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized(); // Add this
@@ -138,7 +139,7 @@ class LoginPage extends ConsumerWidget {
                               // チャット画面に遷移＋ログイン画面を破棄
                               await Navigator.of(context).pushReplacement(
                                 MaterialPageRoute(builder: (context) {
-                                  return ChatPage();
+                                  return ListChannel();
                                 }),
                               );
                             } catch (e) {
