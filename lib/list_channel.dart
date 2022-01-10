@@ -3,17 +3,17 @@ import 'package:goningumi/page.dart';
 
 
 
-void main() => runApp(App());
+// void main() => runApp(App());
+//
+// class App extends StatelessWidget{
+//   @override
+//   Widget build(BuildContext context) {
+//     return MaterialApp(home: ListChannel());
+//   }
+// }
 
-class App extends StatelessWidget{
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(home: MyApp());
-  }
-}
 
-
-class MyApp extends StatefulWidget {
+class ListChannel extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
     return EachChannelTransition();
@@ -22,7 +22,7 @@ class MyApp extends StatefulWidget {
 
 
 
-class EachChannelTransition extends State<MyApp> {
+class EachChannelTransition extends State<ListChannel> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
