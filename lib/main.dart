@@ -137,7 +137,7 @@ class LoginPage extends ConsumerWidget {
                               );
                               // ログインに成功した場合
                               // チャット画面に遷移＋ログイン画面を破棄
-                              await Navigator.of(context).pushReplacement(
+                              await Navigator.of(context).push(
                                 MaterialPageRoute(builder: (context) {
                                   return ListChannel();
                                 }),

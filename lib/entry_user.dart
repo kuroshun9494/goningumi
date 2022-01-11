@@ -1,9 +1,12 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:goningumi/provider.dart';
+
+import 'list_channel.dart';
 
 enum RadioValue { male, female }
 
@@ -258,9 +261,29 @@ class EntryUser extends ConsumerWidget {
                   width: double.infinity,
                   child: ElevatedButton(
                     child: Text('登録する'),
-                    onPressed: () {
+                    onPressed: () async {
                       if (_formKey.currentState!.validate()) {
                         // 入力データが正常な場合の処理
+                        /*try {
+                          // メール/パスワードでユーザー登録
+                          final FirebaseAuth auth = FirebaseAuth.instance;
+                          final result = await auth.createUserWithEmailAndPassword(
+                            email: email,
+                            password: password,
+                          );
+                          // ユーザー情報を更新
+                          context.read(userProvider).state = result.user;
+                          // チャット画面に遷移＋ログイン画面を破棄
+                          await Navigator.of(context).pushReplacement(
+                            MaterialPageRoute(builder: (context) {
+                              return ListChannel();
+                            }),
+                          );
+                        } catch (e) {
+                          // Providerから値を更新
+                          context.read(infoTextProvider).state =
+                          "登録に失敗しました：${e.toString()}";
+                        }*/
                         Navigator.of(context).pop();
                       }
                     },
