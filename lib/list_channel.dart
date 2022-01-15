@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:goningumi/page.dart';
+import 'package:goningumi/each_channel_chat.dart';
 
 
 
@@ -25,25 +25,18 @@ class ListChannel extends StatefulWidget {
 Widget channellistTile(BuildContext context, String title, Color color) {
   return ListTile(
     title: Text(title),
+    leading: Icon(Icons.people),
     contentPadding: EdgeInsets.all(15.0),
     tileColor: color,
-    leading: IconButton(
-      icon: Icon(Icons.people),
-      onPressed: (){
-        Navigator.push(context, MaterialPageRoute(
-          // （2） 実際に表示するページ(ウィジェット)を指定する
-            builder: (context) => FirstPage()
-      ));
+    onTap: (){
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => FirstPage()),
+      );
     },
-    ),
     trailing: Icon(Icons.more_vert),
   );
 }
-
-
-
-
-
 
 
 
