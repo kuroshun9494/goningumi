@@ -1,10 +1,11 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
-import 'package:goningumi/provider.dart';
+import 'package:goningumi/riverpods.dart';
 import 'chat_page.dart';
 import 'entry_user.dart';
 import 'list_channel.dart';
@@ -131,11 +132,25 @@ class LoginPage extends ConsumerWidget {
                             try {
                               // メール/パスワードでログイン
                               final FirebaseAuth auth = FirebaseAuth.instance;
+                           /*   final snapshot = FirebaseFirestore.instance
+                                  .collection('user')
+                                  .where('email', isEqualTo: email)
+
+                                  .snapshots();
+                              //Map<String, dynamic> record = snapshot.document;
+                              //final record = snapshot.data;
+                              // snapshots
+                              Stream<String> hogeStream({required DocumentReference<String> ref}) =>
+                                  ref.snapshots().map(
+                                        (snapshot) => snapshot.data()!,
+                                  );*/
+
                               await auth.signInWithEmailAndPassword(
                                 email: email,
                                 password: password,
                               );
                               // ログインに成功した場合
+
                               // チャット画面に遷移＋ログイン画面を破棄
                               await Navigator.of(context).push(
                                 MaterialPageRoute(builder: (context) {
@@ -214,4 +229,14 @@ class LoginPage extends ConsumerWidget {
       ),
     );
   }
+  /*Future<String> getData(String collection, String inputField,
+    String inputValue, String field) async {
+    DocumentSnapshot<Map<String, dynamic>> querySnapshot =
+    await FirebaseFirestore.instance.collection(collection)
+        .where(inputField, "==", inputValue)
+        .get();
+    //final queryDocSnapshot = querySnapshot.docs;
+    Map<String, dynamic> record = querySnapshot.data;
+    return record[field];
+  }*/
 }

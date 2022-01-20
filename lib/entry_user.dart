@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'package:goningumi/provider.dart';
+import 'package:goningumi/riverpods.dart';
 
 import 'list_channel.dart';
 
