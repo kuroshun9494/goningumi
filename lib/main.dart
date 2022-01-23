@@ -9,6 +9,7 @@ import 'package:goningumi/riverpods.dart';
 import 'chat_page.dart';
 import 'entry_user.dart';
 import 'list_channel.dart';
+import 'create_group.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized(); // Add this
@@ -132,18 +133,30 @@ class LoginPage extends ConsumerWidget {
                             try {
                               // メール/パスワードでログイン
                               final FirebaseAuth auth = FirebaseAuth.instance;
-                           /*   final snapshot = FirebaseFirestore.instance
-                                  .collection('user')
+                              final Stream<QuerySnapshot> userStream =
+                              FirebaseFirestore.instance
+                                  .collection('users')
                                   .where('email', isEqualTo: email)
-
                                   .snapshots();
-                              //Map<String, dynamic> record = snapshot.document;
-                              //final record = snapshot.data;
-                              // snapshots
-                              Stream<String> hogeStream({required DocumentReference<String> ref}) =>
-                                  ref.snapshots().map(
-                                        (snapshot) => snapshot.data()!,
-                                  );*/
+                              print(userStream);
+                              userStream.listen((QuerySnapshot snapshot) {
+                                // final List users =
+                                snapshot.docs
+                                    .map((DocumentSnapshot document) {
+                                  Map<String, dynamic> data =
+                                  document.data() as Map<String, dynamic>;
+                                  final String userName = data['userName'];
+                                  print(userName);
+                                  context.read(userNameProvider).state = userName;
+                                }).toList();
+                              //   snapshot.docs.map((DocumentSnapshot document) {
+                              //   Map<String, dynamic> data =
+                              //   document.data() as Map<String, dynamic>;
+                              //   final String userName = data['userName'];
+                              //   print(data);
+                              //   print(userName);
+                              //   });
+                              });
 
                               await auth.signInWithEmailAndPassword(
                                 email: email,
@@ -154,7 +167,7 @@ class LoginPage extends ConsumerWidget {
                               // チャット画面に遷移＋ログイン画面を破棄
                               await Navigator.of(context).push(
                                 MaterialPageRoute(builder: (context) {
-                                  return ListChannel();
+                                  return CreateGroup();
                                 }),
                               );
                             } catch (e) {
