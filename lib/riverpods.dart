@@ -22,9 +22,7 @@ final emailProvider = StateProvider.autoDispose((ref) {
 
 // アカウント名の受け渡しを行うためのProvider
 // ※ autoDisposeを付けることで自動的に値をリセットできます
-final accountNameProvider = StateProvider.autoDispose((ref) {
-  return '';
-});
+final userNameProvider = StateProvider((ref) => '');
 
 // パスワードの受け渡しを行うためのProvider
 // ※ autoDisposeを付けることで自動的に値をリセットできます

@@ -17,6 +17,7 @@ class FirstPage extends ConsumerWidget {
   Widget build(BuildContext context, ScopedReader watch) {
     // Providerから値を受け取る
     final User user = watch(userProvider).state!;
+    final userName = watch(userNameProvider).state;
     final AsyncValue<QuerySnapshot> asyncPostsQuery = watch(postsQueryProvider);
 
     return Scaffold(
@@ -40,7 +41,9 @@ class FirstPage extends ConsumerWidget {
         children: [
           Container(
             padding: EdgeInsets.all(8),
-            child: Text('ログイン情報：${user.email}'),
+            // child: Text('ログイン情報：${user.email}'),
+            child: Text('ログイン情報：$userName'),
+
           ),
           Expanded(
             // StreamProviderから受け取った値は .when() で状態に応じて出し分けできる
