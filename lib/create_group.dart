@@ -10,14 +10,18 @@ import 'package:goningumi/list_channel.dart';
 // ConsumerWidgetでProviderから値を受け渡す
 class CreateGroup extends ConsumerWidget {
   @override
+  final _formKey = GlobalKey<FormState>();
+
   Widget build(BuildContext context, ScopedReader watch) {
     // Providerから値を受け取る
     final user = watch(userProvider).state!;
     final userName = watch(userNameProvider).state;
     final messageText = watch(messageTextProvider).state;
-    String value2;
+    // String value2;
 
-    return Scaffold(
+    return Form(
+        key: _formKey,
+    child: Scaffold(
       appBar: AppBar(
         title: Text('グループ作成'),
       ),
@@ -35,14 +39,14 @@ class CreateGroup extends ConsumerWidget {
                   // Providerから値を更新
                   context.read(messageTextProvider).state = value;
                 },
-                // autovalidateMode: AutovalidateMode.onUserInteraction,
-                // validator: (value) {
-                //   value2 = value.toString();
-                //   if (value!.isEmpty) {
-                //     return 'Please enter a group-name.';
-                //   }
-                //   return null;
-                // },
+                autovalidateMode: AutovalidateMode.onUserInteraction,
+                validator: (value) {
+                  // value2 = value.toString();
+                  if (value!.isEmpty) {
+                    return 'Please enter a group-name.';
+                  }
+                  return null;
+                },
               ),
               const SizedBox(height: 8),
               Container(
@@ -53,6 +57,7 @@ class CreateGroup extends ConsumerWidget {
                     // if (value! isEqualsTo "") {
                     //   return 'Please enter a region.';
                     // }
+                    if (_formKey.currentState!.validate()) {
                     final date = DateTime.now().toLocal().toIso8601String();
                     final email = user.email;
                     await FirebaseFirestore.instance
@@ -79,13 +84,16 @@ class CreateGroup extends ConsumerWidget {
                         return ListChannel();
                       }),
                     );
-                  },
+                  }
+                    },
                 ),
               )
             ],
           ),
         ),
       ),
+    )
     );
+
   }
 }
