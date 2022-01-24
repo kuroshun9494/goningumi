@@ -9,6 +9,7 @@ import 'package:goningumi/riverpods.dart';
 import 'chat_page.dart';
 import 'entry_user.dart';
 import 'list_channel.dart';
+import 'create_group.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized(); // Add this
@@ -158,7 +159,7 @@ class LoginPage extends ConsumerWidget {
                               // チャット画面に遷移＋ログイン画面を破棄
                               await Navigator.of(context).push(
                                 MaterialPageRoute(builder: (context) {
-                                  return ListChannel();
+                                  return CreateGroup();
                                 }),
                               );
                             } catch (e) {
