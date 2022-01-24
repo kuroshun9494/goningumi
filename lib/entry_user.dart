@@ -21,7 +21,7 @@ class EntryUser extends ConsumerWidget {
   @override
   Widget build(BuildContext context, ScopedReader watch) {
     // Providerから値を受け取る
-    final accountName = watch(userNameProvider).state;
+    final userName = watch(userNameProvider).state;
     final email = watch(emailProvider).state;
     final password = watch(passwordProvider).state;
     final _isObscure1 = watch(obscure1Provider).state;
@@ -59,7 +59,7 @@ class EntryUser extends ConsumerWidget {
                   autovalidateMode: AutovalidateMode.onUserInteraction,
                   validator: (value) {
                     if (value!.isEmpty) {
-                      return 'Please enter a account-name.';
+                      return 'Please enter a user-name.';
                     }
                     return null;
                   },

@@ -136,18 +136,18 @@ class LoginPage extends ConsumerWidget {
                               final Stream<QuerySnapshot> userStream =
                                   FirebaseFirestore.instance
                                       .collection('users')
-                                      // .where('email', isEqualTo: email)
+                                      .where('email', isEqualTo: email)
                                       .snapshots();
-                              print(userStream);
+                              //print(userStream);
                               userStream.listen((QuerySnapshot snapshot) {
-                                final List aaa = snapshot.docs
+                                final List users = snapshot.docs
                                     .map((DocumentSnapshot document) {
                                   Map<String, dynamic> data =
                                       document.data() as Map<String, dynamic>;
                                   final String userName = data['userName'];
                                   print(userName);
+                                  context.read(userNameProvider).state = userName;
                                 }).toList();
-                                print(aaa[0]);
                               });
 
                               await auth.signInWithEmailAndPassword(
