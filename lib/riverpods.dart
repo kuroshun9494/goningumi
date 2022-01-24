@@ -74,3 +74,13 @@ final postsQueryProvider = StreamProvider.autoDispose((ref) {
       .orderBy('date')
       .snapshots();
 });
+
+// StreamProviderを使うことでStreamも扱うことができる
+// ※ autoDisposeを付けることで自動的に値をリセットできます
+final usersQueryProvider = StreamProvider.autoDispose((ref) {
+  return FirebaseFirestore.instance
+      .collection('users')
+      .orderBy('email')
+      .snapshots();
+});
+
