@@ -6,6 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
 import 'package:goningumi/riverpods.dart';
+import 'package:goningumi/search_group.dart';
 import 'chat_page.dart';
 import 'entry_user.dart';
 import 'list_channel.dart';
@@ -159,7 +160,7 @@ class LoginPage extends ConsumerWidget {
                               // チャット画面に遷移＋ログイン画面を破棄
                               await Navigator.of(context).push(
                                 MaterialPageRoute(builder: (context) {
-                                  return CreateGroup();
+                                  return ListChannel();
                                 }),
                               );
                             } catch (e) {
