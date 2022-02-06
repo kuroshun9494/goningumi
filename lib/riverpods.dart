@@ -60,14 +60,14 @@ final regionProvider = StateProvider.autoDispose((ref) {
   return '';
 });
 
+final channelProvider = StateProvider((ref) => '');
+
 // メッセージの受け渡しを行うためのProvider
 // ※ autoDisposeを付けることで自動的に値をリセットできます
 final messageTextProvider = StateProvider.autoDispose((ref) {
   return '';
 });
 
-// StreamProviderを使うことでStreamも扱うことができる
-// ※ autoDisposeを付けることで自動的に値をリセットできます
 final postsQueryProvider = StreamProvider.autoDispose((ref) {
   return FirebaseFirestore.instance
       .collection('posts')
@@ -83,4 +83,3 @@ final usersQueryProvider = StreamProvider.autoDispose((ref) {
       .orderBy('email')
       .snapshots();
 });
-

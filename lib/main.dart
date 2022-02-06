@@ -159,7 +159,7 @@ class LoginPage extends ConsumerWidget {
                               // チャット画面に遷移＋ログイン画面を破棄
                               await Navigator.of(context).push(
                                 MaterialPageRoute(builder: (context) {
-                                  return CreateGroup();
+                                  return EachChannelTransition();
                                 }),
                               );
                             } catch (e) {
