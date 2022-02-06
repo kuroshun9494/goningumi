@@ -22,9 +22,7 @@ final emailProvider = StateProvider.autoDispose((ref) {
 
 // アカウント名の受け渡しを行うためのProvider
 // ※ autoDisposeを付けることで自動的に値をリセットできます
-final accountNameProvider = StateProvider.autoDispose((ref) {
-  return '';
-});
+final userNameProvider = StateProvider((ref) => '');
 
 // パスワードの受け渡しを行うためのProvider
 // ※ autoDisposeを付けることで自動的に値をリセットできます
@@ -79,3 +77,9 @@ final postsQueryProvider = StreamProvider.autoDispose((ref) {
 
 // StreamProviderを使うことでStreamも扱うことができる
 // ※ autoDisposeを付けることで自動的に値をリセットできます
+final usersQueryProvider = StreamProvider.autoDispose((ref) {
+  return FirebaseFirestore.instance
+      .collection('users')
+      .orderBy('email')
+      .snapshots();
+});
