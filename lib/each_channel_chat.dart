@@ -1,5 +1,4 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -7,13 +6,18 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:goningumi/riverpods.dart';
 import 'add_post_page.dart';
 import 'main.dart';
+import 'package:riverpod/riverpod.dart';
 
-// ConsumerWidgetでProviderから値を受け渡す
-class ChatPage extends ConsumerWidget {
+// flutter_chat_uiを使うためのパッケージをインポート
+
+
+
+class FirstPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, ScopedReader watch) {
     // Providerから値を受け取る
     final User user = watch(userProvider).state!;
+    final userName = watch(userNameProvider).state;
     final AsyncValue<QuerySnapshot> asyncPostsQuery = watch(postsQueryProvider);
 
     return Scaffold(
@@ -37,7 +41,9 @@ class ChatPage extends ConsumerWidget {
         children: [
           Container(
             padding: EdgeInsets.all(8),
-            child: Text('ログイン情報：${user.email}'),
+            // child: Text('ログイン情報：${user.email}'),
+            child: Text('ログイン情報：$userName'),
+
           ),
           Expanded(
             // StreamProviderから受け取った値は .when() で状態に応じて出し分けできる
