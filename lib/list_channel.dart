@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:goningumi/each_channel_chat.dart';
+import 'package:goningumi/riverpods.dart';
 
 
 
@@ -14,21 +16,14 @@ import 'package:goningumi/each_channel_chat.dart';
 //
 
 
-class ListChannel extends StatefulWidget {
-  @override
-  State<StatefulWidget> createState() {
-    return EachChannelTransition();
-  }
-}
-
-
-Widget channellistTile(BuildContext context, String title, Color color) {
+Widget channellistTile(BuildContext context, String channel, Color color) {
   return ListTile(
-    title: Text(title),
+    title: Text(channel),
     leading: Icon(Icons.people),
     contentPadding: EdgeInsets.all(15.0),
     tileColor: color,
     onTap: (){
+      context.read(channelProvider).state=channel;
       Navigator.push(
         context,
         MaterialPageRoute(builder: (context) => FirstPage()),
@@ -40,9 +35,9 @@ Widget channellistTile(BuildContext context, String title, Color color) {
 
 
 
-class EachChannelTransition extends State<ListChannel> {
+class EachChannelTransition extends ConsumerWidget {
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, ScopedReader watch) {
     return Scaffold(
       appBar: AppBar(
         title: Text('チャンネル一覧'),
@@ -69,6 +64,8 @@ class EachChannelTransition extends State<ListChannel> {
       ),
     );
   }
+
+
 }
 
 /*

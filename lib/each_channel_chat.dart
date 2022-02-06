@@ -8,6 +8,7 @@ import 'add_post_page.dart';
 import 'main.dart';
 import 'package:riverpod/riverpod.dart';
 
+
 // flutter_chat_uiを使うためのパッケージをインポート
 
 
@@ -16,6 +17,7 @@ class FirstPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, ScopedReader watch) {
     // Providerから値を受け取る
+    final channel =  watch(channelProvider).state;
     final User user = watch(userProvider).state!;
     final AsyncValue<QuerySnapshot> asyncPostsQuery = watch(postsQueryProvider);
 
@@ -48,26 +50,28 @@ class FirstPage extends ConsumerWidget {
               // 値が取得できたとき
               data: (QuerySnapshot query) {
                 return ListView(
-                  children: query.docs.map((document) {
-                    return Card(
-                      child: ListTile(
-                        title: Text(document['text']),
-                        subtitle: Text(document['email']),
-                        trailing: document['email'] == user.email
-                            ? IconButton(
-                          icon: Icon(Icons.delete),
-                          onPressed: () async {
-                            // 投稿メッセージのドキュメントを削除
-                            await FirebaseFirestore.instance
-                                .collection('posts')
-                                .doc(document.id)
-                                .delete();
-                          },
+                  children: [
+                    for (var doc in query.docs)
+                      if(doc["channel"]==channel)
+                        Card(
+                          child: ListTile(
+                            title: Text(doc['text']),
+                            subtitle: Text(doc['email']),
+                            trailing: doc['email'] == user.email
+                                ? IconButton(
+                              icon: Icon(Icons.delete),
+                              onPressed: () async {
+                                // 投稿メッセージのドキュメントを削除
+                                await FirebaseFirestore.instance
+                                    .collection('posts')
+                                    .doc(doc.id)
+                                    .delete();
+                              },
+                            )
+                                : null,
+                          ),
                         )
-                            : null,
-                      ),
-                    );
-                  }).toList(),
+                  ]
                 );
               },
               // 値が読込中のとき
