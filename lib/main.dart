@@ -6,6 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
 import 'package:goningumi/riverpods.dart';
+import 'package:goningumi/search_group.dart';
 import 'chat_page.dart';
 import 'entry_user.dart';
 import 'list_channel.dart';

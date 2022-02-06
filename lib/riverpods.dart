@@ -83,3 +83,9 @@ final usersQueryProvider = StreamProvider.autoDispose((ref) {
       .orderBy('email')
       .snapshots();
 });
+final groupQueryProvider = StreamProvider.autoDispose((ref) {
+  return FirebaseFirestore.instance
+      .collection('channels')
+      .orderBy('channelName')
+      .snapshots();
+});
