@@ -8,7 +8,7 @@ import 'package:goningumi/list_channel.dart';
 
 
 // ConsumerWidgetでProviderから値を受け渡す
-class CreateGroup extends ConsumerWidget {
+class CreateChannel extends ConsumerWidget {
   @override
   final _formKey = GlobalKey<FormState>();
 
@@ -80,7 +80,6 @@ class CreateGroup extends ConsumerWidget {
                     // Navigator.of(context).pop()
                     await Navigator.of(context).push(
                       MaterialPageRoute(builder: (context) {
-
                         return ListChannel();
                       }),
                     );

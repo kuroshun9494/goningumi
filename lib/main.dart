@@ -7,10 +7,9 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 
 import 'package:goningumi/riverpods.dart';
 import 'package:goningumi/search_group.dart';
-import 'chat_page.dart';
 import 'entry_user.dart';
 import 'list_channel.dart';
-import 'create_group.dart';
+import 'create_channel.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized(); // Add this
@@ -160,7 +159,7 @@ class LoginPage extends ConsumerWidget {
                               // チャット画面に遷移＋ログイン画面を破棄
                               await Navigator.of(context).push(
                                 MaterialPageRoute(builder: (context) {
-                                  return EachChannelTransition();
+                                  return ListChannel();
                                 }),
                               );
                             } catch (e) {

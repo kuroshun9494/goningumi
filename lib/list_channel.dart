@@ -1,7 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:goningumi/each_channel_chat.dart';
 import 'package:goningumi/riverpods.dart';
+import 'package:goningumi/create_channel.dart';
 
 
 
@@ -34,49 +36,42 @@ Widget channellistTile(BuildContext context, String channel, Color color) {
 }
 
 
-
-class EachChannelTransition extends ConsumerWidget {
+class ListChannel extends ConsumerWidget {
   @override
   Widget build(BuildContext context, ScopedReader watch) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('チャンネル一覧'),
-      ),
-      body: Center(
-        child: Container(
-          margin: EdgeInsets.all(5),
-          // padding: EdgeInsets.all(5),
-          child: Column(
-            // mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children:<Widget> [
-              channellistTile(context, "アウトドア", Colors.red.withOpacity(0.5)),
-              const SizedBox(height: 5),
-              channellistTile(context, "漫画", Colors.yellow.withOpacity(0.5)),
-              const SizedBox(height: 5),
-              channellistTile(context, "音楽", Colors.blue.withOpacity(0.5)),
-              const SizedBox(height: 5),
-              channellistTile(context, "野球", Colors.green.withOpacity(0.5)),
-              const SizedBox(height: 5),
-              channellistTile(context, "競プロ", Colors.pink.withOpacity(0.5)),
-            ],
-          ),
-        )
-      ),
-    );
-  }
-
-
+      return Scaffold(
+        appBar: AppBar(
+          title: Text('チャンネル一覧'),
+        ),
+        body: Center(
+            child: Container(
+              margin: EdgeInsets.all(5),
+              child: Column(
+                children:<Widget> [
+                  channellistTile(context, "アウトドア", Colors.red.withOpacity(0.5)),
+                  const SizedBox(height: 5),
+                  channellistTile(context, "漫画", Colors.yellow.withOpacity(0.5)),
+                  const SizedBox(height: 5),
+                  channellistTile(context, "音楽", Colors.blue.withOpacity(0.5)),
+                  const SizedBox(height: 5),
+                  channellistTile(context, "野球", Colors.green.withOpacity(0.5)),
+                  const SizedBox(height: 5),
+                  channellistTile(context, "競プロ", Colors.pink.withOpacity(0.5)),
+                ],
+              ),
+            )
+        ),
+        floatingActionButton: FloatingActionButton(
+          child: Icon(Icons.add),
+          onPressed: () async {
+            await Navigator.of(context).push(
+              MaterialPageRoute(builder: (context) {
+                return CreateChannel();
+              }),
+            );
+          },
+        ),
+      );
+    }
 }
 
-/*
-buttonFunction(context),
-chatTitle("乃木坂"),
-buttonFunction(context),
-chatTitle("野球"),
-buttonFunction(context),
-chatTitle("音楽"),
-buttonFunction(context),
-chatTitle("乃木坂"),
-buttonFunction(context),
-chatTitle("競プロ"),
-*/

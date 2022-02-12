@@ -7,10 +7,9 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:goningumi/riverpods.dart';
 import 'package:flutter/material.dart';
 import 'package:rich_text_controller/rich_text_controller.dart';
-import 'chat_page.dart';
 import 'entry_user.dart';
 import 'list_channel.dart';
-import 'create_group.dart';
+import 'create_channel.dart';
 
 // class SearchGroup extends StatelessWidget {
 //   @override
