@@ -22,9 +22,7 @@ final emailProvider = StateProvider.autoDispose((ref) {
 
 // アカウント名の受け渡しを行うためのProvider
 // ※ autoDisposeを付けることで自動的に値をリセットできます
-final accountNameProvider = StateProvider.autoDispose((ref) {
-  return '';
-});
+final userNameProvider = StateProvider((ref) => '');
 
 // パスワードの受け渡しを行うためのProvider
 // ※ autoDisposeを付けることで自動的に値をリセットできます
@@ -62,17 +60,33 @@ final regionProvider = StateProvider.autoDispose((ref) {
   return '';
 });
 
+final channelProvider = StateProvider((ref) => '');
+
 // メッセージの受け渡しを行うためのProvider
 // ※ autoDisposeを付けることで自動的に値をリセットできます
 final messageTextProvider = StateProvider.autoDispose((ref) {
   return '';
 });
 
-// StreamProviderを使うことでStreamも扱うことができる
-// ※ autoDisposeを付けることで自動的に値をリセットできます
 final postsQueryProvider = StreamProvider.autoDispose((ref) {
   return FirebaseFirestore.instance
       .collection('posts')
       .orderBy('date')
+      .snapshots();
+});
+
+// StreamProviderを使うことでStreamも扱うことができる
+// ※ autoDisposeを付けることで自動的に値をリセットできます
+final usersQueryProvider = StreamProvider.autoDispose((ref) {
+  return FirebaseFirestore.instance
+      .collection('users')
+      .orderBy('email')
+      .snapshots();
+});
+
+final channelQueryProvider = StreamProvider.autoDispose((ref) {
+  return FirebaseFirestore.instance
+      .collection('channels')
+      .orderBy('channelName')
       .snapshots();
 });
