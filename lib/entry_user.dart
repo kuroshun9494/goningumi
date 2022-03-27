@@ -5,18 +5,12 @@ import 'package:intl/intl.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:goningumi/riverpods.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:state_notifier/state_notifier.dart';
 
 import 'list_channel.dart';
-import 'counter.dart';
-
 
 enum RadioValue { male, female }
 
-//class EntryUser extends ConsumerWidget {
-class EntryUser extends HookWidget {
+class EntryUser extends ConsumerWidget {
   final _formKey = GlobalKey<FormState>();
 
   RadioValue _sex = RadioValue.male;
@@ -24,23 +18,17 @@ class EntryUser extends HookWidget {
   var birthdayController = TextEditingController();
   var regionController = TextEditingController();
 
-
-
   @override
-  //Widget build(BuildContext context, ScopedReader watch) {
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, ScopedReader watch) {
     // Providerから値を受け取る
-    final userName = useProvider(userNameProvider).state;
-    final email = useProvider(emailProvider).state;
-    final password = useProvider(passwordProvider).state;
-    final _isObscure1 = useProvider(obscure1Provider).state;
-    final _isObscure2 = useProvider(obscure2Provider).state;
-    final sex = useProvider(sexProvider).state;
-    final counter = useProvider(counterProvider);
-    final birthdayState = useProvider(birthdayProvider).state;
-    final region = useProvider(regionProvider).state;
-    //final CounterController counter = context.read(counterProvider.notifier);
-
+    final userName = watch(userNameProvider).state;
+    final email = watch(emailProvider).state;
+    final password = watch(passwordProvider).state;
+    final _isObscure1 = watch(obscure1Provider).state;
+    final _isObscure2 = watch(obscure2Provider).state;
+    final sex = watch(sexProvider).state;
+    final birthday = watch(birthdayProvider).state;
+    final region = watch(regionProvider).state;
 
     return Form(
       key: _formKey,
@@ -60,15 +48,13 @@ class EntryUser extends HookWidget {
                     labelText: 'アカウント名',
                     focusedBorder: OutlineInputBorder(
                       borderSide:
-                      BorderSide(color: Colors.blueAccent, width: 1),
+                          BorderSide(color: Colors.blueAccent, width: 1),
                     ),
                   ),
                   maxLength: 10,
                   onChanged: (String value) {
                     // Providerから値を更新
-                    context
-                        .read(userNameProvider)
-                        .state = value;
+                    context.read(userNameProvider).state = value;
                   },
                   autovalidateMode: AutovalidateMode.onUserInteraction,
                   validator: (value) {
@@ -83,14 +69,12 @@ class EntryUser extends HookWidget {
                     labelText: 'メールアドレス',
                     focusedBorder: OutlineInputBorder(
                       borderSide:
-                      BorderSide(color: Colors.blueAccent, width: 1),
+                          BorderSide(color: Colors.blueAccent, width: 1),
                     ),
                   ),
                   onChanged: (String value) {
                     // Providerから値を更新
-                    context
-                        .read(emailProvider)
-                        .state = value;
+                    context.read(emailProvider).state = value;
                   },
                   autovalidateMode: AutovalidateMode.onUserInteraction,
                   validator: (value) {
@@ -112,14 +96,12 @@ class EntryUser extends HookWidget {
                       // アイコンがタップされたら現在と反対の状態をセットする
                       onPressed: () {
                         // Providerから値を更新
-                        context
-                            .read(obscure1Provider)
-                            .state = !_isObscure1;
+                        context.read(obscure1Provider).state = !_isObscure1;
                       },
                     ),
                     focusedBorder: OutlineInputBorder(
                       borderSide:
-                      BorderSide(color: Colors.blueAccent, width: 1),
+                          BorderSide(color: Colors.blueAccent, width: 1),
                     ),
                   ),
                   obscureText: _isObscure1,
@@ -136,9 +118,7 @@ class EntryUser extends HookWidget {
                   },
                   onChanged: (String value) {
                     // Providerから値を更新
-                    context
-                        .read(passwordProvider)
-                        .state = value;
+                    context.read(passwordProvider).state = value;
                   },
                 ),
                 const SizedBox(height: 10),
@@ -153,14 +133,12 @@ class EntryUser extends HookWidget {
                       // アイコンがタップされたら現在と反対の状態をセットする
                       onPressed: () {
                         // Providerから値を更新
-                        context
-                            .read(obscure2Provider)
-                            .state = !_isObscure2;
+                        context.read(obscure2Provider).state = !_isObscure2;
                       },
                     ),
                     focusedBorder: OutlineInputBorder(
                       borderSide:
-                      BorderSide(color: Colors.blueAccent, width: 1),
+                          BorderSide(color: Colors.blueAccent, width: 1),
                     ),
                   ),
                   obscureText: _isObscure2,
@@ -183,10 +161,7 @@ class EntryUser extends HookWidget {
                   groupValue: _sex,
                   onChanged: (value) {
                     // Providerから値を更新
-                    context
-                        .read(sexProvider)
-                        .state = value.toString();
-                    count(context, counter);
+                    context.read(sexProvider).state = value.toString();
                   },
                 ),
                 RadioListTile(
@@ -195,10 +170,7 @@ class EntryUser extends HookWidget {
                   groupValue: _sex,
                   onChanged: (value) {
                     // Providerから値を更新
-                    context
-                        .read(sexProvider)
-                        .state = value.toString();
-                    count(context, counter);
+                    context.read(sexProvider).state = value.toString();
                   },
                 ),
                 TextFormField(
@@ -207,10 +179,9 @@ class EntryUser extends HookWidget {
                     labelText: '誕生日',
                     focusedBorder: OutlineInputBorder(
                       borderSide:
-                      BorderSide(color: Colors.blueAccent, width: 1),
+                          BorderSide(color: Colors.blueAccent, width: 1),
                     ),
                   ),
-                  //enabled: false,
                   onTap: () async {
                     final date = await showDatePicker(
                       context: context,
@@ -219,41 +190,24 @@ class EntryUser extends HookWidget {
                       //日本語化（アプリ自体を日本語対応させる必要があります。今回は省略させていただきます）
                       initialDatePickerMode: DatePickerMode.year,
                       //最初に年から入力させる
-                      initialDate: DateTime(DateTime
-                          .now()
-                          .year - 10),
+                      initialDate: DateTime(DateTime.now().year - 10),
                       //最初に選択させる日付（今回は10年前）
 
-                      firstDate: DateTime(DateTime
-                          .now()
-                          .year - 100,
-                          DateTime
-                              .now()
-                              .month, DateTime
-                              .now()
-                              .day),
+                      firstDate: DateTime(DateTime.now().year - 100,
+                          DateTime.now().month, DateTime.now().day),
                       //選択可能な、もっとも古い日付（今回は100年前の今日にしています）
                       lastDate: DateTime(
-                          DateTime
-                              .now()
-                              .year - 6,
-                          DateTime
-                              .now()
-                              .month,
-                          DateTime
-                              .now()
+                          DateTime.now().year - 6,
+                          DateTime.now().month,
+                          DateTime.now()
                               .day), ////選択可能な、もっとも新しい日付（今回は6年前の今日にしています）
                     );
 
                     if (date != null) {
                       //誕生日を取得した後の処理をここに書く
 
-                      context
-                          .read(birthdayProvider)
-                          .state =
+                      context.read(birthdayProvider).state =
                           (DateFormat('yyyy/MM/dd')).format(date);
-                      //birthday.increment();
-                      birthdayController.text = (DateFormat('yyyy/MM/dd')).format(date);
                     }
                   },
                   autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -275,7 +229,7 @@ class EntryUser extends HookWidget {
                     labelText: 'お住まいの地域',
                     focusedBorder: OutlineInputBorder(
                       borderSide:
-                      BorderSide(color: Colors.blueAccent, width: 1),
+                          BorderSide(color: Colors.blueAccent, width: 1),
                     ),
                   ),
                   onTap: () {
@@ -286,9 +240,7 @@ class EntryUser extends HookWidget {
                       itemExtent: 40,
                       children: _regions.map(_pickerRegion).toList(),
                       onSelectedItemChanged: (index) {
-                        context
-                            .read(birthdayProvider)
-                            .state = _regions[index];
+                        context.read(birthdayProvider).state = _regions[index];
                       },
                     );
                   },
@@ -366,10 +318,7 @@ class EntryUser extends HookWidget {
       context: context,
       builder: (BuildContext context) {
         return Container(
-          height: MediaQuery
-              .of(context)
-              .size
-              .height / 3,
+          height: MediaQuery.of(context).size.height / 3,
           child: GestureDetector(
             onTap: () {
               Navigator.pop(context);
@@ -378,9 +327,7 @@ class EntryUser extends HookWidget {
               itemExtent: 40,
               children: _regions.map(_pickerRegion).toList(),
               onSelectedItemChanged: (index) {
-                context
-                    .read(birthdayProvider)
-                    .state = _regions[index];
+                context.read(birthdayProvider).state = _regions[index];
               },
             ),
           ),
@@ -388,8 +335,4 @@ class EntryUser extends HookWidget {
       },
     );
   }
-  void count(BuildContext context, Counter counter) {
-    counter.increment();
-  }
-
 }

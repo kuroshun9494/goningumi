@@ -167,13 +167,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.4.4"
-  flutter_hooks:
-    dependency: "direct main"
-    description:
-      name: flutter_hooks
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.18.2+1"
   flutter_link_previewer:
     dependency: transitive
     description:
@@ -217,13 +210,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.14.2"
-  hooks_riverpod:
-    dependency: "direct main"
-    description:
-      name: hooks_riverpod
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.14.0+5"
   html:
     dependency: transitive
     description:
@@ -356,12 +342,12 @@ packages:
     source: hosted
     version: "1.10.0"
   state_notifier:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: state_notifier
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.7.2+1"
+    version: "0.7.1"
   stream_channel:
     dependency: transitive
     description:

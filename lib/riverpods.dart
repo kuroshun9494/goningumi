@@ -3,8 +3,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'counter.dart';
-
 // ユーザー情報の受け渡しを行うためのProvider
 final userProvider = StateProvider((ref) {
   return FirebaseAuth.instance.currentUser;
@@ -55,10 +53,6 @@ final sexProvider = StateProvider.autoDispose((ref) {
 final birthdayProvider = StateProvider.autoDispose((ref) {
   return '';
 });
-
-//final birthday2Provider = StateNotifierProvider((_) => Birthday());
-final counterProvider = StateNotifierProvider((ref) => Counter());
-
 
 // 地域の受け渡しを行うためのProvider
 // ※ autoDisposeを付けることで自動的に値をリセットできます

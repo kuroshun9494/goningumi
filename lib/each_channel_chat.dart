@@ -55,7 +55,7 @@ class FirstPage extends ConsumerWidget {
                 return ListView(
                   children: [
                     for (var doc in query.docs)
-                      if(doc["channel"] == channel)
+                      if(doc["channel"]==channel)
                         Card(
                           child: ListTile(
                             title: Text(doc['text']),
