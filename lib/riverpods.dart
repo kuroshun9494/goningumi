@@ -92,7 +92,7 @@ final usersQueryProvider = StreamProvider.autoDispose((ref) {
 
 final channelQueryProvider = StreamProvider.autoDispose((ref) {
   return FirebaseFirestore.instance
-      .collection('channels')
+      .collection('channel_list')
       .orderBy('channelName')
       .snapshots();
 });
