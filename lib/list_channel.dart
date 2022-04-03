@@ -42,7 +42,7 @@ class ListChannel extends ConsumerWidget {
   Widget build(BuildContext context, ScopedReader watch) {
     return Scaffold(
         appBar: AppBar(
-          title: Text('チャンネル一覧'),
+          title: Text('加入チャンネル'),
         ),
         body: Center(
             child: Container(
@@ -55,11 +55,14 @@ class ListChannel extends ConsumerWidget {
                   channellistTile(
                       context, "漫画", Colors.yellow.withOpacity(0.5)),
                   const SizedBox(height: 5),
-                  channellistTile(context, "音楽", Colors.blue.withOpacity(0.5)),
+                  channellistTile(
+                      context, "音楽", Colors.blue.withOpacity(0.5)),
                   const SizedBox(height: 5),
-                  channellistTile(context, "野球", Colors.green.withOpacity(0.5)),
+                  channellistTile(
+                      context, "野球", Colors.green.withOpacity(0.5)),
                   const SizedBox(height: 5),
-                  channellistTile(context, "競プロ", Colors.pink.withOpacity(0.5)),
+                  channellistTile(
+                      context, "競プロ", Colors.pink.withOpacity(0.5)),
                 ],
               ),
             )

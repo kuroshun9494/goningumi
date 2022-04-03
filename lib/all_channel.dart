@@ -16,6 +16,21 @@ import 'package:riverpod/riverpod.dart';
 class AllChannel extends ConsumerWidget {
   @override
   Widget build(BuildContext context, ScopedReader watch) {
+    int ableToJoinOrNot(var doc, String userName) {
+      // List<String>memberList=[doc["member1"],doc["member2"],doc["member3"],doc["member4"],doc["member5"]];
+      for (int i = 1; i < 6; i++) {
+        if (doc['member${i}'] == userName) return 0;
+        if (doc['member${i}'] == "") return i;
+      }
+      return 0;
+    }
+    void addMember(var doc, int user_number, String userName) {
+        FirebaseFirestore.instance
+            .collection('channels').
+        doc(doc.id).update({
+          'member${user_number}': userName
+      });
+    }
     // Providerから値を受け取る
     final channel =  watch(channelProvider).state;
     final User user = watch(userProvider).state!;
@@ -24,7 +39,7 @@ class AllChannel extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('チャット'),
+        title: Text('チャンネル一覧'),
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.close),
@@ -57,16 +72,12 @@ class AllChannel extends ConsumerWidget {
                           Card(
                             child: ListTile(
                               title: Text(doc['channelName']),
-                              subtitle: Text("a"),
-                              trailing: 1 == 1
+                              subtitle: Text(ableToJoinOrNot(doc,userName).toString()),
+                              trailing: 0!=ableToJoinOrNot(doc,userName)
                                   ? IconButton(
-                                icon: Icon(Icons.delete),
-                                onPressed: () async {
-                                  // 投稿メッセージのドキュメントを削除
-                                  await FirebaseFirestore.instance
-                                      .collection('posts')
-                                      .doc(doc.id)
-                                      .delete();
+                                icon: Icon(Icons.add),
+                                onPressed: (){
+                                  addMember(doc, ableToJoinOrNot(doc,userName), userName);
                                 },
                               )
                                   : null,
@@ -90,16 +101,6 @@ class AllChannel extends ConsumerWidget {
             ),
           ),
         ],
-      ),
-      floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.add),
-        onPressed: () async {
-          await Navigator.of(context).push(
-            MaterialPageRoute(builder: (context) {
-              return AddPostPage();
-            }),
-          );
-        },
       ),
     );
   }
