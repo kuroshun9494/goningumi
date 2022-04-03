@@ -4,7 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'package:goningumi/provider.dart';
+import 'package:goningumi/riverpods.dart';
 
 
 // ConsumerWidgetでProviderから値を受け渡す
@@ -14,6 +14,7 @@ class AddPostPage extends ConsumerWidget {
     // Providerから値を受け取る
     final user = watch(userProvider).state!;
     final messageText = watch(messageTextProvider).state;
+    final channel = watch(channelProvider).state;
 
     return Scaffold(
       appBar: AppBar(
@@ -48,7 +49,8 @@ class AddPostPage extends ConsumerWidget {
                         .set({
                       'text': messageText,
                       'email': email,
-                      'date': date
+                      'date': date,
+                      'channel': channel
                     });
                     Navigator.of(context).pop();
                   },
