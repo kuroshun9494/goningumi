@@ -20,11 +20,11 @@ class AllChannel extends ConsumerWidget {
     final channel =  watch(channelProvider).state;
     final User user = watch(userProvider).state!;
     final userName = watch(userNameProvider).state;
-    final AsyncValue<QuerySnapshot> asyncChannelQuery = watch(channelQueryProvider);
+    final AsyncValue<QuerySnapshot> asyncPostsQuery = watch(channelQueryProvider);
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('チャンネル一覧'),
+        title: Text('チャット'),
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.close),
@@ -45,35 +45,34 @@ class AllChannel extends ConsumerWidget {
             padding: EdgeInsets.all(8),
             // child: Text('ログイン情報：${user.email}'),
             child: Text('ログイン情報：$userName'),
-
           ),
           Expanded(
             // StreamProviderから受け取った値は .when() で状態に応じて出し分けできる
-            child: asyncChannelQuery.when(
+            child: asyncPostsQuery.when(
               // 値が取得できたとき
               data: (QuerySnapshot query) {
                 return ListView(
-                  children: [
-                    for (var doc in query.docs)
-                        Card(
-                          child: ListTile(
-                            title: Text(doc['channelName']),
-                            subtitle: Text("1"),
-                            trailing: 1 == 1
-                                ? IconButton(
-                              icon: Icon(Icons.add),
-                              onPressed: () async {
-                                // 投稿メッセージのドキュメントを削除
-                                await FirebaseFirestore.instance
-                                    .collection('posts')
-                                    .doc(doc.id)
-                                    .delete();
-                              },
-                            )
-                                : null,
-                          ),
-                        )
-                  ]
+                    children: [
+                      for (var doc in query.docs)
+                          Card(
+                            child: ListTile(
+                              title: Text(doc['channelName']),
+                              subtitle: Text("a"),
+                              trailing: 1 == 1
+                                  ? IconButton(
+                                icon: Icon(Icons.delete),
+                                onPressed: () async {
+                                  // 投稿メッセージのドキュメントを削除
+                                  await FirebaseFirestore.instance
+                                      .collection('posts')
+                                      .doc(doc.id)
+                                      .delete();
+                                },
+                              )
+                                  : null,
+                            ),
+                          )
+                    ]
                 );
               },
               // 値が読込中のとき
@@ -91,6 +90,16 @@ class AllChannel extends ConsumerWidget {
             ),
           ),
         ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.add),
+        onPressed: () async {
+          await Navigator.of(context).push(
+            MaterialPageRoute(builder: (context) {
+              return AddPostPage();
+            }),
+          );
+        },
       ),
     );
   }

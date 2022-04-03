@@ -45,7 +45,6 @@ class FirstPage extends ConsumerWidget {
             padding: EdgeInsets.all(8),
             // child: Text('ログイン情報：${user.email}'),
             child: Text('ログイン情報：$userName'),
-
           ),
           Expanded(
             // StreamProviderから受け取った値は .when() で状態に応じて出し分けできる

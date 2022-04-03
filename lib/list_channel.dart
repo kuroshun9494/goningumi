@@ -68,6 +68,7 @@ class ListChannel extends ConsumerWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               FloatingActionButton(
+                heroTag:'hero1',
                 child: Icon(Icons.search),
                 onPressed: () async {
                   await Navigator.of(context).push(
@@ -79,6 +80,7 @@ class ListChannel extends ConsumerWidget {
               ),
               SizedBox(height:5),
               FloatingActionButton(
+                heroTag:'hero2',
                 child: Icon(Icons.add),
                 onPressed: () async {
                   await Navigator.of(context).push(
