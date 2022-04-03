@@ -1,4 +1,3 @@
-
 import 'package:state_notifier/state_notifier.dart';
 
 // StateNotifierを使った実装
@@ -8,4 +7,3 @@ class Counter extends StateNotifier<int> {
   /// カウントを一個増やす
   void increment() => state++;
 }
-
