@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:goningumi/all_channel.dart';
 import 'package:goningumi/each_channel_chat.dart';
 import 'package:goningumi/riverpods.dart';
 import 'package:goningumi/create_channel.dart';
@@ -36,10 +37,10 @@ Widget channellistTile(BuildContext context, String channel, Color color) {
 }
 
 
+@override
 class ListChannel extends ConsumerWidget {
-  @override
   Widget build(BuildContext context, ScopedReader watch) {
-      return Scaffold(
+    return Scaffold(
         appBar: AppBar(
           title: Text('チャンネル一覧'),
         ),
@@ -47,10 +48,12 @@ class ListChannel extends ConsumerWidget {
             child: Container(
               margin: EdgeInsets.all(5),
               child: Column(
-                children:<Widget> [
-                  channellistTile(context, "アウトドア", Colors.red.withOpacity(0.5)),
+                children: <Widget>[
+                  channellistTile(
+                      context, "アウトドア", Colors.red.withOpacity(0.5)),
                   const SizedBox(height: 5),
-                  channellistTile(context, "漫画", Colors.yellow.withOpacity(0.5)),
+                  channellistTile(
+                      context, "漫画", Colors.yellow.withOpacity(0.5)),
                   const SizedBox(height: 5),
                   channellistTile(context, "音楽", Colors.blue.withOpacity(0.5)),
                   const SizedBox(height: 5),
@@ -61,17 +64,35 @@ class ListChannel extends ConsumerWidget {
               ),
             )
         ),
-        floatingActionButton: FloatingActionButton(
-          child: Icon(Icons.add),
-          onPressed: () async {
-            await Navigator.of(context).push(
-              MaterialPageRoute(builder: (context) {
-                return CreateChannel();
-              }),
-            );
-          },
-        ),
-      );
-    }
+        floatingActionButton: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              FloatingActionButton(
+                heroTag:'hero1',
+                child: Icon(Icons.search),
+                onPressed: () async {
+                  await Navigator.of(context).push(
+                    MaterialPageRoute(builder: (context) {
+                      return AllChannel();
+                    }),
+                  );
+                },
+              ),
+              SizedBox(height:5),
+              FloatingActionButton(
+                heroTag:'hero2',
+                child: Icon(Icons.add),
+                onPressed: () async {
+                  await Navigator.of(context).push(
+                    MaterialPageRoute(builder: (context) {
+                      return CreateChannel();
+                    }),
+                  );
+                },
+              )
+            ]
+        )
+    );
+  }
 }
 

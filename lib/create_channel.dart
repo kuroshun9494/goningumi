@@ -71,10 +71,10 @@ class CreateChannel extends ConsumerWidget {
                       'createDate' : date,
                       'updateDate' : date,
                       'member1' : userName,
-                      'member2' : email,
-                      'member3' : email,
-                      'member4' : email,
-                      'member5' : email
+                      'member2' : "",
+                      'member3' : "",
+                      'member4' : "",
+                      'member5' : ""
                     });
                     print(userName);
                     // Navigator.of(context).pop()

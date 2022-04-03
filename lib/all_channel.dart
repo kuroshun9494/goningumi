@@ -13,14 +13,14 @@ import 'package:riverpod/riverpod.dart';
 
 
 
-class FirstPage extends ConsumerWidget {
+class AllChannel extends ConsumerWidget {
   @override
   Widget build(BuildContext context, ScopedReader watch) {
     // Providerから値を受け取る
     final channel =  watch(channelProvider).state;
     final User user = watch(userProvider).state!;
     final userName = watch(userNameProvider).state;
-    final AsyncValue<QuerySnapshot> asyncPostsQuery = watch(postsQueryProvider);
+    final AsyncValue<QuerySnapshot> asyncPostsQuery = watch(channelQueryProvider);
 
     return Scaffold(
       appBar: AppBar(
@@ -52,28 +52,27 @@ class FirstPage extends ConsumerWidget {
               // 値が取得できたとき
               data: (QuerySnapshot query) {
                 return ListView(
-                  children: [
-                    for (var doc in query.docs)
-                      if(doc["channel"] == channel)
-                        Card(
-                          child: ListTile(
-                            title: Text(doc['text']),
-                            subtitle: Text(doc['email']),
-                            trailing: doc['email'] == user.email
-                                ? IconButton(
-                              icon: Icon(Icons.delete),
-                              onPressed: () async {
-                                // 投稿メッセージのドキュメントを削除
-                                await FirebaseFirestore.instance
-                                    .collection('posts')
-                                    .doc(doc.id)
-                                    .delete();
-                              },
-                            )
-                                : null,
-                          ),
-                        )
-                  ]
+                    children: [
+                      for (var doc in query.docs)
+                          Card(
+                            child: ListTile(
+                              title: Text(doc['channelName']),
+                              subtitle: Text("a"),
+                              trailing: 1 == 1
+                                  ? IconButton(
+                                icon: Icon(Icons.delete),
+                                onPressed: () async {
+                                  // 投稿メッセージのドキュメントを削除
+                                  await FirebaseFirestore.instance
+                                      .collection('posts')
+                                      .doc(doc.id)
+                                      .delete();
+                                },
+                              )
+                                  : null,
+                            ),
+                          )
+                    ]
                 );
               },
               // 値が読込中のとき
